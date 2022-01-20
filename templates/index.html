@@ -9,96 +9,147 @@
     <title>Share Notes</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Share Notes</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
+  {% if session['logged_in'] %}
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/">Share Notes</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      </nav>
 
-    <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>User</th>
-            <th>Note</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for note in data %}
+      <table class="table">
+          <thead class="thead-dark">
             <tr>
-                <th scope="row">{{note[0]}}</th>
-                <td>{{note[1]}}</td>
-                <td>{{note[2]}}</td>
-                <td>{{note[3]}}</td>
-                <td>
-                  <a class="btn btn-danger" href="/delete/{{note[0]}}">Delete</a>
-                  <button class="btn btn-warning" id="edit-btn" onclick="openEditForm('{{note[0]}}', '{{note[1]}}', '{{note[2]}}', '{{note[3]}}')">Edit</button>
-                </td>
+              <th>#</th>
+              <th>Date</th>
+              <th>User</th>
+              <th>Note</th>
+              <th></th>
             </tr>
-          {% endfor %}
-        </tbody>
-    </table>
-
-    <form class="form-inline" id="editForm" method="POST">
-      <div class="form-content">
-
-        <h1>Edit Note Data</h1>
-        <label class="sr-only" for="inlineFormInputName2">Name</label>
-        <input type="text" class="form-control mb-2 mr-sm-2" name="editid" id="id_" readonly>
-        <input type="text" class="form-control mb-2 mr-sm-2" name="editdate" id="date" readonly>
-        <input type="text" class="form-control mb-2 mr-sm-2" name="edituser" id="user" readonly>
-        <input type="text" class="form-control mb-2 mr-sm-2" name="editnote" id="note">
-      
-        <input type="submit" name="submitBtn" class="btn btn-primary mb-2" value="Save">
-        <input type="submit" name="submitBtn" class="btn btn-outline-danger mb-2" value="Close">
-        
-      </div>
-    </form>
-
-    <button class="open-button btn btn-outline-success" id="open-btn" onclick="openForm()">Add note</button>
-
-    <div id="form-popup">
-        <form id="form-container" method="POST">
-            <div class="form-group">
-            <label for="formGroupExampleInput">Note Text</label>
-            <input type="text" name="note" class="form-control" id="formGroupExampleInput" placeholder="Note" required>
-            </div>
-            <input type="submit" class="btn btn-outline-primary" name="submitBtn" value="Add">
-            <button type="button" class="btn cancel btn-outline-danger" onclick="closeForm()">Close</button>
-            {% for msg in get_flashed_messages() %}
-                <div class="alert alert-danger" role="alert">
-                    <strong>Oh snap!</strong> {{msg}}
-                </div>
+          </thead>
+          <tbody>
+            {% for note in data %}
+              <tr>
+                  <th scope="row">{{note[0]}}</th>
+                  <td>{{note[1]}}</td>
+                  <td>{{note[2]}}</td>
+                  <td>{{note[3]}}</td>
+                  <td>
+                    <a class="btn btn-danger" href="/delete/{{note[0]}}">Delete</a>
+                    <button class="btn btn-warning" id="edit-btn" onclick="openEditForm('{{note[0]}}', '{{note[1]}}', '{{note[2]}}', '{{note[3]}}')">Edit</button>
+                  </td>
+              </tr>
             {% endfor %}
-        </form>
-    </div>
+          </tbody>
+      </table>
 
-    <script>
-        function openForm() {
-          document.getElementById("form-popup").style.display = "block";
-          document.getElementById('open-btn').style.display = "none";
+      <form class="form-inline" id="editForm" method="POST">
+        <div class="form-content">
+
+          <h1>Edit Note Data</h1>
+          <label class="sr-only" for="inlineFormInputName2">Name</label>
+          <input type="text" class="form-control mb-2 mr-sm-2" name="editid" id="id_" readonly>
+          <input type="text" class="form-control mb-2 mr-sm-2" name="editdate" id="date" readonly>
+          <input type="text" class="form-control mb-2 mr-sm-2" name="edituser" id="user" readonly>
+          <input type="text" class="form-control mb-2 mr-sm-2" name="editnote" id="note">
+        
+          <input type="submit" name="submitBtn" class="btn btn-primary mb-2" value="Save">
+          <input type="submit" name="submitBtn" class="btn btn-outline-danger mb-2" value="Close">
+          
+        </div>
+      </form>
+
+      <button class="open-button btn btn-outline-success" id="open-btn" onclick="openForm()">Add note</button>
+      <button class="footer m-2 fixed-bottom btn btn-danger"><a style="text-decoration: none; color: #fff;" href="/logout">Logout</a></button>
+
+      <div id="form-popup">
+          <form id="form-container" method="POST">
+              <div class="form-group">
+              <label for="formGroupExampleInput">Note Text</label>
+              <input type="text" name="note" class="form-control" id="formGroupExampleInput" placeholder="Note" required>
+              </div>
+              <input type="submit" class="btn btn-outline-primary" name="submitBtn" value="Add">
+              <button type="button" class="btn cancel btn-outline-danger" onclick="closeForm()">Close</button>
+              {% for msg in get_flashed_messages() %}
+                  <div class="alert alert-danger" role="alert">
+                      <strong>Oh snap!</strong> {{msg}}
+                  </div>
+              {% endfor %}
+          </form>
+      </div>
+
+      <script>
+          function openForm() {
+            document.getElementById("form-popup").style.display = "block";
+            document.getElementById('open-btn').style.display = "none";
+          }
+
+          function closeForm() {
+            document.getElementById("form-popup").style.display = "none";
+            document.getElementById('open-btn').style.display = "block";
+          }
+
+          function openEditForm(id_, date, user, note) {
+            document.getElementById('editForm').style.display = "block";
+
+            document.getElementById('id_').value = id_;
+            document.getElementById('date').value = date;
+            document.getElementById('user').value = user;
+            document.getElementById('note').value = note;
+          }
+
+          function closeEditForm() {
+            document.getElementById('editForm').style.display = "none";
+          }
+      </script>
+    {% else %}
+      <style>
+        body{
+          padding:100px 0;
+          background-color:#efefef
         }
-
-        function closeForm() {
-          document.getElementById("form-popup").style.display = "none";
-          document.getElementById('open-btn').style.display = "block";
+        a, a:hover{
+          color:#333
         }
+      </style>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-6">
+            <div>
+              <div class="form-group">
+                <label>Password</label>
+                <form method="POST" class="input-group" id="show_hide_password">
+                  <input class="form-control" name="passcode" type="password">
+                  <input type="submit" class="btn btn-success" value="Continue">
+                  <div class="input-group-addon">
+                    <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                  </div>
+                  {% for msg in get_flashed_messages() %}
+                    <p style="color: red;">{{msg}}</p>
+                  {% endfor %}
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        function openEditForm(id_, date, user, note) {
-          document.getElementById('editForm').style.display = "block";
-
-          document.getElementById('id_').value = id_;
-          document.getElementById('date').value = date;
-          document.getElementById('user').value = user;
-          document.getElementById('note').value = note;
-        }
-
-        function closeEditForm() {
-          document.getElementById('editForm').style.display = "none";
-        }
-    </script>
+      <script>
+        $(document).ready(function() {
+          $("#show_hide_password a").on('click', function(event) {
+          event.preventDefault();
+          if($('#show_hide_password input').attr("type") == "text"){
+              $('#show_hide_password input').attr('type', 'password');
+              $('#show_hide_password i').addClass( "fa-eye-slash" );
+              $('#show_hide_password i').removeClass( "fa-eye" );
+          }else if($('#show_hide_password input').attr("type") == "password"){
+              $('#show_hide_password input').attr('type', 'text');
+              $('#show_hide_password i').removeClass( "fa-eye-slash" );
+              $('#show_hide_password i').addClass( "fa-eye" );
+          }
+          });
+        });
+      </script>
+    {% endif %}
 </body>
 </html>

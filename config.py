@@ -44,7 +44,7 @@ def create_note(note, username):
 def delete_note(noteid):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute('SELECT username, note FROM Notes WHERE id = ?', (noteid))
+    c.execute('SELECT Author, Note FROM Notes WHERE id = ?', (noteid))
     note = c.fetchone()
     c.execute('DELETE FROM Notes WHERE id = ?', (noteid))
     conn.commit()

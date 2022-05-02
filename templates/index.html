@@ -25,9 +25,9 @@
       <input type="submit" class="btn btn-success" value="Submit"/>
       {% for msg in get_flashed_messages() %}
         {% if 'Error' in msg %}
-          <p class="btn-danger" style="color: red;">{{msg}}</p>
+          <p style="color: red;">{{msg}}</p>
         {% else %}
-          <p class="btn-danger" style="color: green;">{{msg}}</p>
+          <p style="color: green;">{{msg}}</p>
         {% endif %}
       {% endfor %}
     </form>
@@ -35,20 +35,20 @@
     <table class="table mx-auto">
       <thead class="thead-dark">
         <tr>
-          <th>Author</th>
-          <th>Date Uploaded</th>
+          <th style="width:20%">Author</th>
+          <th style="width:20%">Date Uploaded</th>
           <th>Note</th>
-          <th></th>
+          <th style="width:20%"></th>
         </tr>
       </thead>
       <tbody>
-        {% for file in data %}
+        {% for note in data %}
           <tr>
-            <td>{{file[0]}}</td>
-            <td>{{file[1]}}</td>
-            <td>{{file[2]}}</td>
+            <td>{{note[1]}}</td>
+            <td>{{note[2]}}</td>
+            <td>{{note[3]}}</td>
             <td>
-              <button type="button" class="btn btn-danger"><a style="text-decoration: none; color: #fff;" href="/delete/{{session['username']}}/{{file[0]}}">Delete</a></button>
+              <button type="button" class="btn btn-danger"><a style="text-decoration: none; color: #fff;" href="/delete/{{note[0]}}">Delete</a></button>
             </td>
           </tr>
         {% endfor %}

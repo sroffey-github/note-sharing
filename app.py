@@ -16,7 +16,8 @@ def index():
             note = request.form['note']
             username = session['username']
             if config.create_note(note, username):
-                pass
+                flash('Note Created')
+                return render_template('index.html', data=config.get_notes())
             else:
                 flash('Error, Unable to create note!')
                 return render_template('index.html', data=config.get_notes())
@@ -31,7 +32,10 @@ def index():
                 flash('Error, Access Denied')
                 return render_template('index.html')
     else:
-        return render_template('index.html')
+        if session.get('logged_in'):
+            return render_template('index.html', data=config.get_notes())
+        else:
+            return render_template('index.html')
     
 @app.route('/delete/<noteid>')
 def delete(noteid):

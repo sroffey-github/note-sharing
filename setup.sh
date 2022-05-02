@@ -1,0 +1,3 @@
+mkdir db
+mkdir logs
+

@@ -11,7 +11,13 @@ log.txt
 
 # database
 *.db
+db/*.db
+db/*
+db
 
+logs/*
+logs
+*.log
 # Distribution / packaging
 .Python
 build/
